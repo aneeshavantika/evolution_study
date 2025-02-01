@@ -5,31 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evolution Study Guide</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        .section {
-            display: none;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px gray;
-        }
-        button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-        .quiz-container {
-            text-align: left;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { width: 80%; margin: auto; padding: 20px; }
+        .section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
+        button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+        .quiz-container { text-align: left; }
     </style>
 </head>
 <body>
@@ -79,12 +59,7 @@
             document.getElementById(sectionId).style.display = 'block';
         }
 
-        let flashcards = [
-            "What is evolution?", 
-            "Define natural selection.",
-            "What is an example of an adaptation?",
-            "What is genetic drift?"
-        ];
+        let flashcards = ["What is evolution?", "Define natural selection.", "What is an example of an adaptation?", "What is genetic drift?"];
         let currentCard = 0;
 
         function nextFlashcard() {
@@ -94,19 +69,16 @@
 
         function calculateScore() {
             let score = 0;
-            let answers = {
-                q1: "b", 
-                q2: "a"
-            };
+            let answers = { q1: "b", q2: "a" };
             let form = document.getElementById("quizForm");
-            
+
             Object.keys(answers).forEach(q => {
                 let selected = form[q].value;
                 if (selected === answers[q]) {
                     score++;
                 }
             });
-            
+
             document.getElementById("result").innerText = `You scored ${score}/2!`;
         }
     </script>
