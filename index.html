@@ -17,6 +17,7 @@
         .feedback { font-size: 24px; margin-top: 10px; }
         .timer { font-size: 18px; color: #ffcc00; }
         .leaderboard { margin-top: 20px; background: #353567; padding: 15px; border-radius: 10px; }
+        iframe { margin-top: 15px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -31,7 +32,7 @@
             <p class="timer">⏳ Time Left: <span id="countdown">30</span> sec</p>
             <p id="quizQuestion"></p>
             <div id="quizOptions"></div>
-            <iframe id="khanVideo" width="560" height="315" style="display:none; margin-top: 20px;" frameborder="0" allowfullscreen></iframe>
+            <iframe id="khanVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
             <button class="btn btn-quiz" onclick="submitAnswer()">Submit</button>
             <p class="feedback" id="feedback"></p>
             <button class="btn" onclick="promptEmail()" style="display:none;" id="emailButton">📧 Email Wrong Answers</button>
@@ -52,6 +53,18 @@
                 options: ["Respiration", "Photosynthesis", "Fermentation"],
                 correct: 1,
                 video: "https://www.youtube.com/embed/3UqJ1MGeYkY"
+            },
+            {
+                question: "How does DNA replication work?",
+                options: ["One strand is copied", "Both strands are copied", "Only the nucleus is copied"],
+                correct: 1,
+                video: "https://www.youtube.com/embed/8kK2zwjRV0M"
+            },
+            {
+                question: "What is the function of ribosomes?",
+                options: ["Protein synthesis", "ATP production", "Photosynthesis"],
+                correct: 0,
+                video: "https://www.youtube.com/embed/u9dhO0iCLww"
             }
         ];
         let currentQuestion = 0;
@@ -60,7 +73,6 @@
             let q = quizQuestions[currentQuestion];
             document.getElementById("quizQuestion").innerText = q.question;
             document.getElementById("khanVideo").src = q.video;
-            document.getElementById("khanVideo").style.display = "block";
             let optionsHtml = "";
             q.options.forEach((opt, index) => {
                 optionsHtml += `<input type='radio' name='quiz' value='${index}'> ${opt}<br>`;
