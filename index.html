@@ -3,84 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evolution Study Guide</title>
+    <title>Evolution & Biology Study Guide</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
         .container { width: 80%; margin: auto; padding: 20px; }
         .section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
         button { margin: 10px; padding: 10px 20px; font-size: 16px; }
         .quiz-container { text-align: left; }
+        .feedback { font-size: 24px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Evolution Study Guide</h1>
+        <h1>Evolution & Biology Study Guide</h1>
         <button onclick="showSection('notes')">Study Notes</button>
         <button onclick="showSection('flashcards')">Flashcards</button>
         <button onclick="showSection('quiz')">Practice Quiz</button>
 
         <div id="notes" class="section">
             <h2>Study Notes</h2>
-            <p><b>Evolution:</b> Gradual change in species over generations.</p>
-            <p><b>Natural Selection:</b> Process where organisms with favorable traits survive and reproduce.</p>
-            <p><b>Speciation:</b> Formation of new species due to reproductive isolation.</p>
+            <p><b>Cell Theory:</b> All living organisms are composed of cells, which are the basic unit of life and arise from pre-existing cells.</p>
+            <p><b>Macromolecules:</b> Carbohydrates provide energy, proteins build structures, lipids store energy, and nucleic acids (DNA/RNA) carry genetic information.</p>
+            <p><b>Genetics:</b> DNA consists of nucleotides (A, T, C, G). The Punnett square predicts inheritance of traits.</p>
+            <p><b>Evolution:</b> Natural selection drives changes in populations over generations, leading to adaptation and speciation.</p>
+            <p><b>Ecology:</b> Ecosystems consist of producers, consumers, and decomposers interacting within biogeochemical cycles.</p>
         </div>
 
         <div id="flashcards" class="section">
             <h2>Flashcards</h2>
-            <p id="flashcard">Click to see a question!</p>
+            <p id="flashcardFront">Click to Flip</p>
+            <p id="flashcardBack" style="display:none;">Definition</p>
+            <button onclick="flipFlashcard()">Flip</button>
             <button onclick="nextFlashcard()">Next</button>
         </div>
 
         <div id="quiz" class="section quiz-container">
             <h2>Practice Quiz</h2>
-            <form id="quizForm">
-                <p>1. What is evolution?</p>
-                <input type="radio" name="q1" value="a"> A sudden change in an individual<br>
-                <input type="radio" name="q1" value="b"> Gradual change in a population over time<br>
-                <input type="radio" name="q1" value="c"> A random mutation in an organism<br>
-
-                <p>2. What is an example of an adaptation?</p>
-                <input type="radio" name="q2" value="a"> Camouflage in animals<br>
-                <input type="radio" name="q2" value="b"> Eating food<br>
-                <input type="radio" name="q2" value="c"> Learning a new language<br>
-                
-                <button type="button" onclick="calculateScore()">Submit</button>
-            </form>
-            <p id="result"></p>
+            <p id="quizQuestion"></p>
+            <div id="quizOptions"></div>
+            <button onclick="submitAnswer()">Submit</button>
+            <p class="feedback" id="feedback"></p>
+            <button onclick="promptEmail()" style="display:none;" id="emailButton">Email Wrong Answers</button>
         </div>
     </div>
 
     <script>
         function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.style.display = 'none';
-            });
+            document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
             document.getElementById(sectionId).style.display = 'block';
         }
 
-        let flashcards = ["What is evolution?", "Define natural selection.", "What is an example of an adaptation?", "What is genetic drift?"];
+        let flashcards = [
+            {question: "What is the basic unit of life?", answer: "The cell."},
+            {question: "What is the powerhouse of the cell?", answer: "Mitochondria."},
+            {question: "What is the function of ribosomes?", answer: "Protein synthesis."}
+        ];
         let currentCard = 0;
 
+        function flipFlashcard() {
+            let front = document.getElementById("flashcardFront");
+            let back = document.getElementById("flashcardBack");
+            if (front.style.display !== "none") {
+                front.style.display = "none";
+                back.style.display = "block";
+            } else {
+                front.style.display = "block";
+                back.style.display = "none";
+            }
+        }
+
         function nextFlashcard() {
-            document.getElementById("flashcard").innerText = flashcards[currentCard];
             currentCard = (currentCard + 1) % flashcards.length;
+            document.getElementById("flashcardFront").innerText = flashcards[currentCard].question;
+            document.getElementById("flashcardBack").innerText = flashcards[currentCard].answer;
         }
 
-        function calculateScore() {
-            let score = 0;
-            let answers = { q1: "b", q2: "a" };
-            let form = document.getElementById("quizForm");
+        let quizQuestions = [
+            {question: "What is evolution?", options: ["A sudden change", "Gradual change over time", "Random mutation"], correct: 1},
+            {question: "What is an example of adaptation?", options: ["Learning a language", "Camouflage", "Eating food"], correct: 1}
+        ];
+        let currentQuestion = 0;
+        let wrongAnswers = [];
 
-            Object.keys(answers).forEach(q => {
-                let selected = form[q].value;
-                if (selected === answers[q]) {
-                    score++;
-                }
+        function loadQuestion() {
+            let q = quizQuestions[currentQuestion];
+            document.getElementById("quizQuestion").innerText = q.question;
+            let optionsHtml = "";
+            q.options.forEach((opt, index) => {
+                optionsHtml += `<input type='radio' name='quiz' value='${index}'> ${opt}<br>`;
             });
-
-            document.getElementById("result").innerText = `You scored ${score}/2!`;
+            document.getElementById("quizOptions").innerHTML = optionsHtml;
         }
+
+        function submitAnswer() {
+            let selected = document.querySelector("input[name='quiz']:checked");
+            if (!selected) return;
+            let isCorrect = selected.value == quizQuestions[currentQuestion].correct;
+            document.getElementById("feedback").innerText = isCorrect ? "🎉 Correct!" : "😞 Wrong!";
+            if (!isCorrect) {
+                wrongAnswers.push(quizQuestions[currentQuestion].question + " - Your Answer: " + quizQuestions[currentQuestion].options[selected.value]);
+            }
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                setTimeout(loadQuestion, 2000);
+            } else {
+                document.getElementById("emailButton").style.display = 'block';
+            }
+        }
+
+        function promptEmail() {
+            if (wrongAnswers.length === 0) {
+                alert("Great job! No wrong answers to email.");
+                return;
+            }
+            let email = prompt("Enter your email address to receive your wrong answers:");
+            if (!email) return;
+            sendEmail(email);
+        }
+
+        function sendEmail(email) {
+            let subject = "Your Wrong Answers from the Evolution & Biology Quiz";
+            let body = "Here are the questions you got wrong:\n\n" + wrongAnswers.join("\n");
+            let mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+        }
+
+        loadQuestion();
     </script>
 </body>
 </html>
