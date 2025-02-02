@@ -26,26 +26,12 @@
         <button class="btn btn-flashcards" onclick="showSection('flashcards')">🎴 Flashcards</button>
         <button class="btn btn-quiz" onclick="showSection('quiz')">🧠 Practice Quiz</button>
         
-        <div id="notes" class="section">
-            <h2>📖 Study Notes</h2>
-            <p><b>Cell Theory:</b> All living organisms are made of cells.</p>
-            <p><b>Photosynthesis:</b> Converts CO₂ + H₂O + Light into Glucose + O₂.</p>
-            <p><b>DNA Structure:</b> Double helix with A-T and C-G base pairing.</p>
-        </div>
-
-        <div id="flashcards" class="section">
-            <h2>🎴 Flashcards</h2>
-            <p id="flashcardFront">Click to Flip</p>
-            <p id="flashcardBack" style="display:none;">Definition</p>
-            <button class="btn" onclick="flipFlashcard()">Flip</button>
-            <button class="btn" onclick="nextFlashcard()">Next</button>
-        </div>
-
         <div id="quiz" class="section quiz-container">
             <h2>🧠 Practice Quiz</h2>
             <p class="timer">⏳ Time Left: <span id="countdown">30</span> sec</p>
             <p id="quizQuestion"></p>
             <div id="quizOptions"></div>
+            <iframe id="khanVideo" width="560" height="315" style="display:none; margin-top: 20px;" frameborder="0" allowfullscreen></iframe>
             <button class="btn btn-quiz" onclick="submitAnswer()">Submit</button>
             <p class="feedback" id="feedback"></p>
             <button class="btn" onclick="promptEmail()" style="display:none;" id="emailButton">📧 Email Wrong Answers</button>
@@ -54,42 +40,32 @@
     </div>
 
     <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
-            document.getElementById(sectionId).style.display = 'block';
-        }
-
         let quizQuestions = [
-            {question: "What is the powerhouse of the cell?", options: ["Nucleus", "Mitochondria", "Ribosome"], correct: 1},
-            {question: "What process converts light energy into chemical energy?", options: ["Respiration", "Photosynthesis", "Fermentation"], correct: 1}
+            {
+                question: "What is the powerhouse of the cell?",
+                options: ["Nucleus", "Mitochondria", "Ribosome"],
+                correct: 1,
+                video: "https://www.youtube.com/embed/1Z9pqST72is" 
+            },
+            {
+                question: "What process converts light energy into chemical energy?",
+                options: ["Respiration", "Photosynthesis", "Fermentation"],
+                correct: 1,
+                video: "https://www.youtube.com/embed/3UqJ1MGeYkY"
+            }
         ];
         let currentQuestion = 0;
-        let wrongAnswers = [];
-        let countdown;
 
         function loadQuestion() {
             let q = quizQuestions[currentQuestion];
             document.getElementById("quizQuestion").innerText = q.question;
+            document.getElementById("khanVideo").src = q.video;
+            document.getElementById("khanVideo").style.display = "block";
             let optionsHtml = "";
             q.options.forEach((opt, index) => {
                 optionsHtml += `<input type='radio' name='quiz' value='${index}'> ${opt}<br>`;
             });
             document.getElementById("quizOptions").innerHTML = optionsHtml;
-            resetTimer();
-        }
-
-        function resetTimer() {
-            let timeLeft = 30;
-            document.getElementById("countdown").innerText = timeLeft;
-            clearInterval(countdown);
-            countdown = setInterval(() => {
-                timeLeft--;
-                document.getElementById("countdown").innerText = timeLeft;
-                if (timeLeft === 0) {
-                    clearInterval(countdown);
-                    submitAnswer();
-                }
-            }, 1000);
         }
 
         function submitAnswer() {
@@ -97,16 +73,8 @@
             if (!selected) return;
             let isCorrect = selected.value == quizQuestions[currentQuestion].correct;
             document.getElementById("feedback").innerText = isCorrect ? "🎉 Correct!" : "😞 Wrong!";
-            if (!isCorrect) wrongAnswers.push(quizQuestions[currentQuestion].question);
             currentQuestion++;
             if (currentQuestion < quizQuestions.length) setTimeout(loadQuestion, 2000);
-        }
-
-        function flipFlashcard() {
-            let front = document.getElementById("flashcardFront");
-            let back = document.getElementById("flashcardBack");
-            front.style.display = front.style.display === "none" ? "block" : "none";
-            back.style.display = back.style.display === "none" ? "block" : "none";
         }
 
         loadQuestion();
