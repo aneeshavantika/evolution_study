@@ -3,73 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biology Study Guide</title>
+    <title>Biology Study Hub</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
-        .container { width: 80%; margin: auto; padding: 20px; }
-        .section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
-        button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+        body { font-family: 'Arial', sans-serif; text-align: center; background-color: #1e1e2f; color: #ffffff; margin: 0; }
+        .container { width: 90%; max-width: 800px; margin: auto; padding: 20px; }
+        .section { display: none; background: #292942; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px #9b59b6; }
+        .btn { margin: 10px; padding: 15px 30px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { transform: scale(1.1); }
+        .btn-study { background: #ff4757; color: white; }
+        .btn-flashcards { background: #1e90ff; color: white; }
+        .btn-quiz { background: #2ecc71; color: white; }
         .quiz-container { text-align: left; }
         .feedback { font-size: 24px; margin-top: 10px; }
+        .timer { font-size: 18px; color: #ffcc00; }
+        .leaderboard { margin-top: 20px; background: #353567; padding: 15px; border-radius: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Biology Study Guide</h1>
-        <button onclick="showSection('notes')">Study Notes</button>
-        <button onclick="showSection('flashcards')">Flashcards</button>
-        <button onclick="showSection('quiz')">Practice Quiz</button>
-
+        <h1 style="color: #ffcc00;">Biology Study Hub 🚀</h1>
+        <button class="btn btn-study" onclick="showSection('notes')">📘 Study Notes</button>
+        <button class="btn btn-flashcards" onclick="showSection('flashcards')">🎴 Flashcards</button>
+        <button class="btn btn-quiz" onclick="showSection('quiz')">🧠 Practice Quiz</button>
+        
         <div id="notes" class="section">
-            <h2>Study Notes</h2>
-            <h3>Cell Structure & Function</h3>
-            <p><b>Cell Theory:</b> All living organisms are composed of cells, the basic unit of life.</p>
-            <p><b>Organelles:</b> Nucleus (DNA storage), Mitochondria (ATP production), Ribosomes (Protein synthesis), ER (Transport), Golgi Apparatus (Packaging), Lysosomes (Digestion).</p>
-            <p><b>Transport:</b> Diffusion, Osmosis, Active Transport, Endocytosis, Exocytosis.</p>
-
-            <h3>DNA & Protein Synthesis</h3>
-            <p><b>DNA Structure:</b> Double helix, A-T, C-G base pairing.</p>
-            <p><b>Central Dogma:</b> DNA → RNA → Protein.</p>
-            <p><b>Mutations:</b> Substitutions, Insertions, Deletions, Frameshifts.</p>
-            
-            <h3>Macromolecules & Water Properties</h3>
-            <p><b>Carbohydrates:</b> Energy source (glucose, starch, cellulose).</p>
-            <p><b>Lipids:</b> Energy storage, cell membranes (phospholipids).</p>
-            <p><b>Proteins:</b> Enzymes, structure, transport.</p>
-            <p><b>Nucleic Acids:</b> DNA & RNA (genetic information).</p>
-            <p><b>Water Properties:</b> Polarity, Cohesion, Adhesion, Universal Solvent.</p>
-            
-            <h3>Meiosis & Heredity</h3>
-            <p><b>Meiosis:</b> Produces haploid gametes (sperm, egg) for sexual reproduction.</p>
-            <p><b>Punnett Squares:</b> Predicts inheritance of traits.</p>
-            <p><b>Dominant vs. Recessive:</b> Traits controlled by alleles.</p>
-            
-            <h3>Plants & Energy</h3>
+            <h2>📖 Study Notes</h2>
+            <p><b>Cell Theory:</b> All living organisms are made of cells.</p>
             <p><b>Photosynthesis:</b> Converts CO₂ + H₂O + Light into Glucose + O₂.</p>
-            <p><b>Cellular Respiration:</b> Converts Glucose + O₂ into ATP (energy).</p>
-            <p><b>Plant Tissues:</b> Dermal (protection), Vascular (transport), Ground (support).</p>
-            
-            <h3>The Cell Cycle & Cancer</h3>
-            <p><b>Cell Cycle:</b> G1 (growth), S (DNA replication), G2 (prep), Mitosis (division).</p>
-            <p><b>Mitosis:</b> Prophase, Metaphase, Anaphase, Telophase, Cytokinesis.</p>
-            <p><b>Cancer:</b> Uncontrolled cell division due to mutations.</p>
+            <p><b>DNA Structure:</b> Double helix with A-T and C-G base pairing.</p>
         </div>
 
         <div id="flashcards" class="section">
-            <h2>Flashcards</h2>
+            <h2>🎴 Flashcards</h2>
             <p id="flashcardFront">Click to Flip</p>
             <p id="flashcardBack" style="display:none;">Definition</p>
-            <button onclick="flipFlashcard()">Flip</button>
-            <button onclick="nextFlashcard()">Next</button>
+            <button class="btn" onclick="flipFlashcard()">Flip</button>
+            <button class="btn" onclick="nextFlashcard()">Next</button>
         </div>
 
         <div id="quiz" class="section quiz-container">
-            <h2>Practice Quiz</h2>
+            <h2>🧠 Practice Quiz</h2>
+            <p class="timer">⏳ Time Left: <span id="countdown">30</span> sec</p>
             <p id="quizQuestion"></p>
             <div id="quizOptions"></div>
-            <button onclick="submitAnswer()">Submit</button>
+            <button class="btn btn-quiz" onclick="submitAnswer()">Submit</button>
             <p class="feedback" id="feedback"></p>
-            <button onclick="promptEmail()" style="display:none;" id="emailButton">Email Wrong Answers</button>
+            <button class="btn" onclick="promptEmail()" style="display:none;" id="emailButton">📧 Email Wrong Answers</button>
+            <div class="leaderboard"><h3>🏆 Leaderboard</h3><p id="leaderboardScores">No scores yet</p></div>
         </div>
     </div>
 
@@ -85,6 +65,7 @@
         ];
         let currentQuestion = 0;
         let wrongAnswers = [];
+        let countdown;
 
         function loadQuestion() {
             let q = quizQuestions[currentQuestion];
@@ -94,6 +75,21 @@
                 optionsHtml += `<input type='radio' name='quiz' value='${index}'> ${opt}<br>`;
             });
             document.getElementById("quizOptions").innerHTML = optionsHtml;
+            resetTimer();
+        }
+
+        function resetTimer() {
+            let timeLeft = 30;
+            document.getElementById("countdown").innerText = timeLeft;
+            clearInterval(countdown);
+            countdown = setInterval(() => {
+                timeLeft--;
+                document.getElementById("countdown").innerText = timeLeft;
+                if (timeLeft === 0) {
+                    clearInterval(countdown);
+                    submitAnswer();
+                }
+            }, 1000);
         }
 
         function submitAnswer() {
@@ -104,6 +100,13 @@
             if (!isCorrect) wrongAnswers.push(quizQuestions[currentQuestion].question);
             currentQuestion++;
             if (currentQuestion < quizQuestions.length) setTimeout(loadQuestion, 2000);
+        }
+
+        function flipFlashcard() {
+            let front = document.getElementById("flashcardFront");
+            let back = document.getElementById("flashcardBack");
+            front.style.display = front.style.display === "none" ? "block" : "none";
+            back.style.display = back.style.display === "none" ? "block" : "none";
         }
 
         loadQuestion();
